@@ -77,7 +77,7 @@ function initApplication(PinboardAPI $api): Application
 
 function initNotExistingDatabase(Application $app): void
 {
-    if (defined(DATABASE_FILEPATH) && !file_exists(DATABASE_FILEPATH)) {
+    if (defined('DATABASE_FILEPATH') && !file_exists(DATABASE_FILEPATH)) {
         // create file
         file_put_contents(DATABASE_FILEPATH, '');
         // setup database
