@@ -22,7 +22,8 @@
     "autoload": {
         "psr-4": {
             "Intervention\\Pinboard\\": "src/"
-        }
+        },
+        "files": ["functions.php"]
     },
     "bin": [
         "pinboard"
