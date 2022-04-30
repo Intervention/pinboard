@@ -58,7 +58,11 @@ class SyncCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($this->bookmarksChanged() || $input->getOption('force')) {
-            $pinboardData = $this->getPinboardData();
+            try {
+                $pinboardData = $this->getPinboardData();
+            } catch (Exception $e) {
+                $output->writeln("<error>Failed to load data from Pinboard. (" . $e->getMessage() . ") </error>");
+            }
 
             if ($pinboardData->count()) {
                 $output->writeln("<info>Sync started ...</info>");
@@ -133,10 +137,6 @@ class SyncCommand extends Command
      */
     private function getPinboardData($limit = null)
     {
-        try {
-            return new Collection($this->api->get_all($limit));
-        } catch (Exception $e) {
-            $this->error($e->getMessage());
-        }
+        return new Collection($this->api->get_all($limit));
     }
 }
