@@ -1,0 +1,72 @@
+#!/usr/bin/env php
+<?php
+
+use Dotenv\Dotenv;
+use Illuminate\Container\Container;
+use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Events\Dispatcher;
+use Intervention\Pinboard\Commands\SearchCommand;
+use Intervention\Pinboard\Commands\SetupCommand;
+use Intervention\Pinboard\Commands\StatusCommand;
+use Intervention\Pinboard\Commands\SyncCommand;
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\NullOutput;
+use Alfred\Workflows\Workflow as AlfredBuilder;
+
+define('DATABASE_FILEPATH', __DIR__ . '/storage/database/database.sqlite');
+
+if (file_exists(__DIR__ . '/../../autoload.php')) {
+    require __DIR__ . '/../../autoload.php';
+} else {
+    require __DIR__ . '/vendor/autoload.php';
+}
+
+// configuration
+try {
+    // try to load .pinboard in home directory
+    $dotenv = Dotenv::createImmutable($_SERVER['HOME'], '.pinboard');
+    $dotenv->load();
+} catch (Exception $e) {}
+
+// database
+$capsule = new Capsule;
+$capsule->addConnection([
+    'driver'    => 'sqlite',
+    'database'  => DATABASE_FILEPATH,
+    'prefix'    => '',
+]);
+
+// Make this Capsule instance available globally via static methods... (optional)
+$capsule->setAsGlobal();
+
+// Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
+$capsule->bootEloquent();
+
+// pinboard api
+$api = new PinboardAPI(
+    isset($_ENV['PINBOARD_USERNAME']) ? $_ENV['PINBOARD_USERNAME'] : false,
+    isset($_ENV['PINBOARD_TOKEN']) ? $_ENV['PINBOARD_TOKEN'] : false,
+);
+
+// app
+$app = new Application('Intervention Pinboard', '2.2');
+
+// add commands
+$app->add(new SetupCommand());
+$app->add(new StatusCommand());
+$app->add(new SearchCommand(new AlfredBuilder()));
+$app->add(new SyncCommand($api));
+
+// create database file if it not already exists
+if ( ! file_exists(DATABASE_FILEPATH)) {
+    // create file
+    file_put_contents(DATABASE_FILEPATH, '');
+    // setup database
+    $app->find('setup')->run(
+        new ArrayInput(['command' => 'setup']),
+        new NullOutput()
+    );
+}
+
+$app->run();

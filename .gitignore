@@ -1,0 +1,5 @@
+/storage/database/database.sqlite
+/vendor
+composer.lock
+.DS_Store
+.env

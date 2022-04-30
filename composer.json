@@ -1,0 +1,30 @@
+{
+    "name": "intervention/pinboard",
+    "description": "Searchable local Pinboard mirror",
+    "keywords": ["pinboard"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Oliver Vogel",
+            "email": "oliver@olivervogel.com"
+        }
+    ],
+    "require": {
+        "php": "^7.2|^8",
+        "kijin/pinboard-api": "0.3.*",
+        "guzzlehttp/guzzle": "~7.3",
+        "nesbot/carbon": "~2.5",
+        "symfony/console": "^5.0",
+        "illuminate/database": "^8.0",
+        "vlucas/phpdotenv": "^5.3",
+        "joetannenbaum/alfred-workflow": "^0.1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Intervention\\Pinboard\\": "src/"
+        }
+    },
+    "bin": [
+        "pinboard"
+    ]
+}
