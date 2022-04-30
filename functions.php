@@ -11,6 +11,12 @@ use Alfred\Workflows\Workflow as AlfredBuilder;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
+function bootstrapConfiguration(): void
+{
+    initDotenv();
+    initDatabase();
+}
+
 function initDotenv(): Dotenv
 {
     try {
@@ -62,6 +68,9 @@ function initApplication(PinboardAPI $api): Application
     $app->add(new StatusCommand());
     $app->add(new SearchCommand(new AlfredBuilder()));
     $app->add(new SyncCommand($api));
+
+    // init database if it is not already existing
+    initNotExistingDatabase($app);
 
     return $app;
 }
