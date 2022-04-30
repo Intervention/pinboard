@@ -15,7 +15,6 @@ define('DATABASE_FILEPATH', __DIR__ . '/storage/database/database.sqlite');
 bootstrapConfiguration();
 
 // application
-$api = initPinboardApi();
-$app = initApplication($api);
-
-$app->run();
+initPinboardApplication(
+    initPinboardApi()
+)->run();

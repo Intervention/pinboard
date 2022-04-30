@@ -58,10 +58,10 @@ function initPinboardApi(): PinboardAPI
     );
 }
 
-function initApplication(PinboardAPI $api): Application
+function initPinboardApplication(PinboardAPI $api): Application
 {
     // app
-    $app = new Application('Intervention Pinboard', '2.2');
+    $app = new Application('Intervention Pinboard');
 
     // add commands
     $app->add(new SetupCommand());
