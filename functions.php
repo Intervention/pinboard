@@ -53,8 +53,8 @@ function initDatabase(): Capsule
 function initPinboardApi(): PinboardAPI
 {
     return new PinboardAPI(
-        isset($_ENV['PINBOARD_USERNAME']) ? $_ENV['PINBOARD_USERNAME'] : false,
-        isset($_ENV['PINBOARD_TOKEN']) ? $_ENV['PINBOARD_TOKEN'] : false,
+        env('PINBOARD_USERNAME'),
+        env('PINBOARD_TOKEN')
     );
 }
 
