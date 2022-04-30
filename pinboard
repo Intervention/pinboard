@@ -2,9 +2,7 @@
 <?php
 
 use Dotenv\Dotenv;
-use Illuminate\Container\Container;
 use Illuminate\Database\Capsule\Manager as Capsule;
-use Illuminate\Events\Dispatcher;
 use Intervention\Pinboard\Commands\SearchCommand;
 use Intervention\Pinboard\Commands\SetupCommand;
 use Intervention\Pinboard\Commands\StatusCommand;
@@ -27,10 +25,12 @@ try {
     // try to load .pinboard in home directory
     $dotenv = Dotenv::createImmutable($_SERVER['HOME'], '.pinboard');
     $dotenv->load();
-} catch (Exception $e) {}
+} catch (Exception $e) {
+    //
+}
 
 // database
-$capsule = new Capsule;
+$capsule = new Capsule();
 $capsule->addConnection([
     'driver'    => 'sqlite',
     'database'  => DATABASE_FILEPATH,
@@ -59,7 +59,7 @@ $app->add(new SearchCommand(new AlfredBuilder()));
 $app->add(new SyncCommand($api));
 
 // create database file if it not already exists
-if ( ! file_exists(DATABASE_FILEPATH)) {
+if (!file_exists(DATABASE_FILEPATH)) {
     // create file
     file_put_contents(DATABASE_FILEPATH, '');
     // setup database

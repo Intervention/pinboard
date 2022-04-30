@@ -2,6 +2,7 @@
 
 namespace Intervention\Pinboard\Commands;
 
+use Exception;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use PinboardAPI;
