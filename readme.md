@@ -37,6 +37,8 @@ You may need to alter the path to the php executable in the Script Filter node. 
 
 Now you should be able to search your Pinboard links quickly with Alfred by typing `p` and your search string.
 
+<img src="https://raw.githubusercontent.com/Intervention/pinboard/master/storage/images/sample.png" width="605" height="155">
+
 ## License
 
 Intervention Eloquent Hashid is licensed under the [MIT License](http://opensource.org/licenses/MIT).
