@@ -41,6 +41,6 @@ Now you should be able to search your Pinboard links quickly with Alfred by typi
 
 ## License
 
-Intervention Eloquent Hashid is licensed under the [MIT License](http://opensource.org/licenses/MIT).
+Intervention Pinboard is licensed under the [MIT License](http://opensource.org/licenses/MIT).
 
 Copyright 2022 [Oliver Vogel](https://intervention.io/)
