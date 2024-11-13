@@ -7,7 +7,6 @@ use Intervention\Pinboard\Commands\SetupCommand;
 use Intervention\Pinboard\Commands\StatusCommand;
 use Intervention\Pinboard\Commands\SyncCommand;
 use Symfony\Component\Console\Application;
-use Alfred\Workflows\Workflow as AlfredBuilder;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\NullOutput;
 
@@ -66,7 +65,7 @@ function initPinboardApplication(PinboardAPI $api): Application
     // add commands
     $app->add(new SetupCommand());
     $app->add(new StatusCommand());
-    $app->add(new SearchCommand(new AlfredBuilder()));
+    $app->add(new SearchCommand());
     $app->add(new SyncCommand($api));
 
     // init database if it is not already existing

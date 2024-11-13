@@ -2,7 +2,6 @@
 
 namespace Intervention\Pinboard\Commands;
 
-use Alfred\Workflows\Workflow as AlfredBuilder;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -11,25 +10,6 @@ use Intervention\Pinboard\Bookmark;
 
 class SearchCommand extends Command
 {
-    /**
-     * Alfred XML builder
-     *
-     * @var \Alfred\Workflows\Workflow
-     */
-    private $builder;
-
-    /**
-     * Create new instance
-     *
-     * @param AlfredBuilder $builder
-     */
-    public function __construct(AlfredBuilder $builder)
-    {
-        parent::__construct();
-
-        $this->builder = $builder;
-    }
-
     /**
      * Configure command
      *
@@ -56,17 +36,8 @@ class SearchCommand extends Command
 
             if ($bookmarks->count()) {
                 foreach ($bookmarks as $bookmark) {
-                    $item = $this->builder->result();
-                    $item->valid(true);
-                    $item->uid('pinboard_bookmark');
-                    $item->arg($bookmark->url);
-                    $item->title($bookmark->title);
-                    $item->subtitle($bookmark->url);
-                    $item->icon(__DIR__ . '/../../storage/images/pinboard.png');
+                    // TODO
                 }
-
-                // output alfred xml
-                exit($this->builder->output());
             }
         }
 

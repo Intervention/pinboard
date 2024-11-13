@@ -29,18 +29,8 @@ Now you can run the application, to sync your links from your Pinboard account.
 
 You can automate the syncing process by calling the script regularly as a cron job.
 
-## Usage in Alfred 4
-
-Now you have local database of all your links. To be able to search your links with Alfred, import the workflow `SearchPinboard.alfredworkflow` by double clicking or dragging it into the application settings.
-
-You may need to alter the path to the php executable in the Script Filter node. Feel free to change the other settings of the workflow as you like.
-
-Now you should be able to search your Pinboard links quickly with Alfred by typing `p` and your search string.
-
-<img src="https://raw.githubusercontent.com/Intervention/pinboard/master/storage/images/sample.png" width="605" height="155">
-
 ## License
 
 Intervention Pinboard is licensed under the [MIT License](http://opensource.org/licenses/MIT).
 
-Copyright 2022 [Oliver Vogel](https://intervention.io/)
+Copyright 2025 [Oliver Vogel](https://intervention.io/)
