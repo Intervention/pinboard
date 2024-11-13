@@ -1,6 +1,6 @@
 <?php
 
-namespace Intervention\Pinboard;
+namespace Intervention\Pinboard\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
