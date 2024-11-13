@@ -1,46 +1,82 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Intervention\Pinboard\Commands;
 
-use Symfony\Component\Console\Command\Command;
+use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Intervention\Pinboard\Bookmark;
+use Intervention\Pinboard\Models\Bookmark;
+use Intervention\Pinboard\Models\Tag;
+use Symfony\Component\Console\Input\ArrayInput;
 
-class SearchCommand extends Command
+class SearchCommand extends BaseCommand
 {
     /**
      * Configure command
      *
      * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('search');
         $this->setDescription('Search in local bookmark database');
-        $this->addArgument('keyword', InputArgument::OPTIONAL);
+        $this->addArgument('keyword', InputArgument::REQUIRED);
     }
 
     /**
      * Execution handler
      *
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
+     * @param InputInterface $input
+     * @param OutputInterface $output
      * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if ($keyword = $input->getArgument('keyword')) {
-            $bookmarks = Bookmark::search($keyword)->get();
+        // check if database needs to be updated
+        if ($this->app()->databaseUpdateNecessary()) {
+            $output->writeln("<info>Bringing the database up to date ... </info>");
+            $returnCode = $this->app()->doRun(
+                new ArrayInput(['command' => 'pull']),
+                $output,
+            );
 
-            if ($bookmarks->count()) {
-                foreach ($bookmarks as $bookmark) {
-                    // TODO
-                }
+            if ($returnCode !== self::SUCCESS) {
+                return self::FAILURE;
             }
         }
 
-        return 0;
+        // search for bookmarks
+        $bookmarks = Bookmark::search($input->getArgument('keyword'))->get();
+
+        if ($bookmarks->count() == 0) {
+            return self::INVALID;
+        }
+
+        $output->writeln('');
+
+        foreach ($bookmarks as $bookmark) {
+            $output->writeln("<info>📌 " . ($bookmark->title ? $bookmark->title : $bookmark->url) . "</info>");
+            $output->writeln("   " . $this->formatTags($bookmark->tags));
+            $output->writeln("   <fg=bright-green;options=bold,underscore>" . $bookmark->url . "</>");
+            $output->write(PHP_EOL);
+        }
+
+        return self::SUCCESS;
+    }
+
+    /**
+     * Format given text for output in cli
+     *
+     * @param Collection $tags
+     * @return string
+     */
+    private function formatTags(Collection $tags): string
+    {
+        return $tags->map(function (Tag $tag) {
+            return "<comment>" . $tag->title . "</comment>";
+        })->join(" ");
     }
 }

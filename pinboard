@@ -1,20 +1,27 @@
 #!/usr/bin/env php
 <?php
 
-// auto loader
+use Dotenv\Dotenv;
+use Intervention\Pinboard\Application;
+
 if (file_exists(__DIR__ . '/../../autoload.php')) {
     require __DIR__ . '/../../autoload.php';
 } else {
     require __DIR__ . '/vendor/autoload.php';
 }
 
-// config
-define('DATABASE_FILEPATH', __DIR__ . '/storage/database/database.sqlite');
+try {
+    $dotenv = Dotenv::createImmutable($_SERVER['HOME'], '.pinboard');
+    $dotenv->load();
+} catch (Exception) {
+    //
+}
 
-// bootstrap
-bootstrapConfiguration();
+$application = new Application(
+    env('PINBOARD_USERNAME'),
+    env('PINBOARD_TOKEN'),
+    env('PINBOARD_DATABASE_FILEPATH', __DIR__ . '/storage/database/database.sqlite'),
+    env('PINBOARD_UPDATE_EVERY', '12 hours'),
+);
 
-// application
-initPinboardApplication(
-    initPinboardApi()
-)->run();
+$application->run();

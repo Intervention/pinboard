@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Intervention\Pinboard\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Tag extends Model
 {
@@ -26,9 +29,9 @@ class Tag extends Model
     /**
      * Bookmark object
      *
-     * @return ?Bookmark
+     * @return BelongsTo
      */
-    public function bookmark()
+    public function bookmark(): BelongsTo
     {
         return $this->belongsTo(Bookmark::class);
     }

@@ -1,20 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Intervention\Pinboard\Commands;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Intervention\Pinboard\Bookmark;
+use Intervention\Pinboard\Models\Bookmark;
 
-class StatusCommand extends Command
+class StatusCommand extends BaseCommand
 {
     /**
      * Configure command
      *
      * @return void
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('status');
         $this->setDescription('Get current status of local database.');
@@ -23,11 +24,11 @@ class StatusCommand extends Command
     /**
      * Execution handler
      *
-     * @param  InputInterface  $input
-     * @param  OutputInterface $output
+     * @param InputInterface $input
+     * @param OutputInterface $output
      * @return int
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $count = sprintf('%d bookmarks in database', Bookmark::count());
         $lastupdate = sprintf('Last update %s', Bookmark::lastUpdatedAt()->diffForHumans());
@@ -35,6 +36,6 @@ class StatusCommand extends Command
         $output->writeln("<info>" . $count . "</info>");
         $output->writeln("<comment>" . $lastupdate . "</comment>");
 
-        return 0;
+        return self::SUCCESS;
     }
 }

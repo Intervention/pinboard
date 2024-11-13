@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Intervention\Pinboard\Models;
 
-use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
-use GuzzleHttp\Client;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Query\Builder as QueryBuilder;
 
 class Bookmark extends Model
 {
@@ -26,9 +29,9 @@ class Bookmark extends Model
     /**
      * Tags relationship
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
-    public function tags()
+    public function tags(): HasMany
     {
         return $this->hasMany(Tag::class);
     }
@@ -36,49 +39,29 @@ class Bookmark extends Model
     /**
      * Search scope
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  string                              $keyword
-     * @return \Illuminate\Database\Query\Builder
+     * @param Builder $query
+     * @param string $keyword
+     * @return Builder
      */
-    public function scopeSearch($query, $keyword)
+    public function scopeSearch(Builder $query, string $keyword): Builder
     {
         return $query
-                ->where("title", "like", "%{$keyword}%")
-                ->orWhere("url", "like", "%{$keyword}%")
-                ->orWhereIn("id", function ($subquery) use ($keyword) {
-                    $subquery
-                        ->select('bookmark_id')
-                        ->from('tags')
-                        ->where("title", "like", "{$keyword}%");
-                })->orderBy('timestamp');
-    }
-
-    /**
-     * Return HTTP status code of bookmark url
-     *
-     * @return int
-     */
-    public function getHttpStatusAttribute()
-    {
-        $client = new Client();
-
-        try {
-            $response = $client->request('GET', $this->url, [
-                'http_errors' => false
-            ]);
-        } catch (Exception $e) {
-            return 200;
-        }
-
-        return $response->getStatusCode();
+            ->where("title", "like", "%{$keyword}%")
+            ->orWhere("url", "like", "%{$keyword}%")
+            ->orWhereIn("id", function (QueryBuilder $subquery) use ($keyword) {
+                $subquery
+                    ->select('bookmark_id')
+                    ->from('tags')
+                    ->where("title", "like", "{$keyword}%");
+            })->orderBy('timestamp');
     }
 
     /**
      * Return Carbon object with time of last database update
      *
-     * @return \Carbon\Carbon
+     * @return Carbon
      */
-    public static function lastUpdatedAt()
+    public static function lastUpdatedAt(): Carbon
     {
         $last = self::orderBy('created_at')->first();
 
