@@ -10,13 +10,13 @@
         }
     ],
     "require": {
-        "php": "^8",
+        "php": "^8.1",
         "kijin/pinboard-api": "0.3.*",
-        "guzzlehttp/guzzle": "~7.4",
-        "nesbot/carbon": "~2.5",
-        "symfony/console": "^6.0",
-        "illuminate/database": "^9.0",
-        "vlucas/phpdotenv": "^5.3"
+        "guzzlehttp/guzzle": "^7.9",
+        "nesbot/carbon": "^3.8",
+        "symfony/console": "^7.1",
+        "illuminate/database": "^11.0",
+        "vlucas/phpdotenv": "^5.6"
     },
     "autoload": {
         "psr-4": {
