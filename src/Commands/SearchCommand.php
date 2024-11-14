@@ -24,6 +24,7 @@ class SearchCommand extends BaseCommand
         $this->setName('search');
         $this->setDescription('Search in local bookmark database');
         $this->addArgument('keyword', InputArgument::REQUIRED);
+        $this->addOption('only-url', 'u', null, 'Display only the url in search results.');
     }
 
     /**
@@ -55,18 +56,44 @@ class SearchCommand extends BaseCommand
             return self::INVALID;
         }
 
-        $output->writeln('');
-
         foreach ($bookmarks as $bookmark) {
-            $output->writeln("<info>📌 " . ($bookmark->title ? $bookmark->title : $bookmark->url) . "</info>");
-            if ($bookmark->tags->count()) {
-                $output->writeln("   " . $this->formatTags($bookmark->tags));
+            if ($input->getOption('only-url')) {
+                $this->displayBookmarkShort($output, $bookmark);
+            } else {
+                $this->displayBookmark($output, $bookmark);
             }
-            $output->writeln("   <fg=bright-green;options=bold,underscore>" . $bookmark->url . "</>");
-            $output->write(PHP_EOL);
         }
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Display full info of given bookmark
+     *
+     * @param OutputInterface $output
+     * @param Bookmark $bookmark
+     * @return void
+     */
+    private function displayBookmark(OutputInterface $output, Bookmark $bookmark): void
+    {
+        $output->writeln("<info>📌 " . ($bookmark->title ? $bookmark->title : $bookmark->url) . "</info>");
+        if ($bookmark->tags->count()) {
+            $output->writeln("   " . $this->formatTags($bookmark->tags));
+        }
+        $output->writeln("   <fg=bright-green;options=bold,underscore>" . $bookmark->url . "</>");
+        $output->write(PHP_EOL);
+    }
+
+    /**
+     * Display only url of given bookmark
+     *
+     * @param OutputInterface $output
+     * @param Bookmark $bookmark
+     * @return void
+     */
+    private function displayBookmarkShort(OutputInterface $output, Bookmark $bookmark): void
+    {
+        $output->writeln($bookmark->url);
     }
 
     /**
