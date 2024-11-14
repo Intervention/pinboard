@@ -5,9 +5,8 @@
 This packages provides a local command line interface to interact with your
 link collection at [pinboard.in](https://pinboard.in/). The main reason behind
 this project is, to have a local mirror of all Pinboard links an a Sqlite
-database to be able to search the whole collection quickly with
-[Alfred](https://www.alfredapp.com). Therefore this packages also provides an
-Alfred Workflow.
+database to be able to search the whole collection quickly with the command
+line.
 
 ## Installation
 

@@ -32,11 +32,6 @@ class InitCommand extends BaseCommand
     {
         $builder = $this->app()->database()->schema();
 
-        if ($this->app()->databaseIsFunctional()) {
-            $output->writeln("<info>Database already initiated.</info>");
-            return self::SUCCESS;
-        }
-
         // bookmarks table
         $builder->dropIfExists('bookmarks');
         $builder->create('bookmarks', function (Blueprint $table) {

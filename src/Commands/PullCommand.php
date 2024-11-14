@@ -69,9 +69,11 @@ class PullCommand extends BaseCommand
 
             // save tags
             foreach ($pin->tags as $tag) {
-                $bookmark->tags()->save(new Tag([
-                    'title' => $tag
-                ]));
+                if (!empty($tag)) {
+                    $bookmark->tags()->save(new Tag([
+                        'title' => $tag
+                    ]));
+                }
             }
 
             $bar->advance();

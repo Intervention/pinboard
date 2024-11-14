@@ -59,7 +59,9 @@ class SearchCommand extends BaseCommand
 
         foreach ($bookmarks as $bookmark) {
             $output->writeln("<info>📌 " . ($bookmark->title ? $bookmark->title : $bookmark->url) . "</info>");
-            $output->writeln("   " . $this->formatTags($bookmark->tags));
+            if ($bookmark->tags->count()) {
+                $output->writeln("   " . $this->formatTags($bookmark->tags));
+            }
             $output->writeln("   <fg=bright-green;options=bold,underscore>" . $bookmark->url . "</>");
             $output->write(PHP_EOL);
         }
