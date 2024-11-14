@@ -7,6 +7,7 @@ namespace Intervention\Pinboard;
 use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Exception;
+use GuzzleHttp\Client;
 use PinboardAPI;
 use Intervention\Pinboard\Commands\InitCommand;
 use Intervention\Pinboard\Commands\PullCommand;
@@ -14,6 +15,7 @@ use Intervention\Pinboard\Commands\SearchCommand;
 use Intervention\Pinboard\Commands\StatusCommand;
 use Symfony\Component\Console\Application as BaseApplication;
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Intervention\Pinboard\Commands\AddCommand;
 use Intervention\Pinboard\Models\Bookmark;
 use Intervention\Pinboard\Models\Tag;
 
@@ -43,6 +45,7 @@ class Application extends BaseApplication
         $this->add(new PullCommand());
         $this->add(new SearchCommand());
         $this->add(new StatusCommand());
+        $this->add(new AddCommand());
     }
 
     /**
@@ -63,6 +66,11 @@ class Application extends BaseApplication
     public function database(): Capsule
     {
         return $this->database;
+    }
+
+    public function httpClient(): Client
+    {
+        return new Client();
     }
 
     /**

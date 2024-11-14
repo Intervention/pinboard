@@ -38,7 +38,7 @@ class InitCommand extends BaseCommand
             $table->increments('id');
             $table->string('title');
             $table->string('url');
-            $table->timestamp('timestamp');
+            $table->timestamp('timestamp')->useCurrent();
             $table->timestamps();
             $table->index(['title']);
             $table->index(['url']);
