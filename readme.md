@@ -37,26 +37,36 @@ only needs to be done once during the initial setup.
 
 ## Usage
 
+### Search Bookmarks
+
+> $ pinboard search <keywords>
+
 Search your bookmarks with the following command. The first time you run this
 command, all your bookmarks will be loaded from your pinboard account and saved
 locally. This happens once if no data is available or if the time interval for
 a new update has expired.
 
-    $ pinboard search <keywords>
+### Add Bookmarks
+
+> $ pinboard add <url> <tags>
 
 Add a new bookmark to the collection, this will be saved both locally and in
 your account at pinboard.in. If the URL already exists, the bookmark will not
 be created again, but will be overwritten with the current data.
 
-    $ pinboard add <url> <tags>
+### See Status of Local Bookmark Database
+
+> $ pinboard status
 
 Show the status of the local database mirror of your Pinboard account.
 
-    $ pinboard status
+### Load all Bookmarks from pinboard.in Account
 
-Load the current bookmarks from your configured pinboard account.
+> $ pinboard pull
 
-    $ pinboard pull
+Normally this command does not need to be called manually. It is executed
+automatically when the local database exceeds an age specified by the config
+value `PINBOARD_UPDATE_EVERY` in your `.pinboard` file. The default is `12 hours`.
 
 ## Authors
 
