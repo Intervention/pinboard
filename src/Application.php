@@ -27,7 +27,7 @@ class Application extends BaseApplication
         private string $api_username,
         private string $api_token,
         public string $database_filepath,
-        public string $update_every = '12 hours',
+        public string $update_every = '5 days',
     ) {
         parent::__construct('Intervention Pinboard');
 
@@ -68,6 +68,11 @@ class Application extends BaseApplication
         return $this->database;
     }
 
+    /**
+     * Return new http client
+     *
+     * @return Client
+     */
     public function httpClient(): Client
     {
         return new Client();
