@@ -44,6 +44,12 @@ a new update has expired.
 
     $ pinboard search <keywords>
 
+Add a new bookmark to the collection, this will be saved both locally and in
+your account at pinboard.in. If the URL already exists, the bookmark will not
+be created again, but will be overwritten with the current data.
+
+    $ pinboard add <url> <tags>
+
 Show the status of the local database mirror of your Pinboard account.
 
     $ pinboard status
