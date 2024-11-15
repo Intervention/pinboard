@@ -48,7 +48,9 @@ class SearchCommand extends BaseCommand
         }
 
         // search for bookmarks
-        $bookmarks = Bookmark::search($input->getArgument('keyword'))->get();
+        $bookmarks = Bookmark::search($input->getArgument('keyword'))
+            ->orderBy('timestamp')
+            ->get();
 
         if ($bookmarks->count() == 0) {
             return self::INVALID;

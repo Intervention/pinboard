@@ -54,7 +54,7 @@ class Bookmark extends Model
                     ->select('bookmark_id')
                     ->from('tags')
                     ->where("title", "like", "{$keyword}%");
-            })->orderBy('timestamp');
+            });
     }
 
     /**
