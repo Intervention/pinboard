@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class InitCommand extends BaseCommand
+class InitCommand extends AbstractBaseCommand
 {
     /**
      * Configure command

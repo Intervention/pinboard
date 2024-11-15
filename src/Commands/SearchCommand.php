@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Intervention\Pinboard\Models\Bookmark;
 use Symfony\Component\Console\Input\ArrayInput;
 
-class SearchCommand extends BaseCommand
+class SearchCommand extends AbstractBaseCommand
 {
     /**
      * Configure command

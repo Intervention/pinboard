@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Intervention\Pinboard\Models\Bookmark;
 
-class StatusCommand extends BaseCommand
+class StatusCommand extends AbstractBaseCommand
 {
     /**
      * Configure command

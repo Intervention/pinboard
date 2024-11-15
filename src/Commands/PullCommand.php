@@ -13,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Intervention\Pinboard\Models\Bookmark;
 use Intervention\Pinboard\Models\Tag;
 
-class PullCommand extends BaseCommand
+class PullCommand extends AbstractBaseCommand
 {
     /**
      * Configure command

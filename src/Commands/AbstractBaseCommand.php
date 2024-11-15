@@ -7,7 +7,7 @@ namespace Intervention\Pinboard\Commands;
 use Intervention\Pinboard\Application;
 use Symfony\Component\Console\Command\Command;
 
-abstract class BaseCommand extends Command
+abstract class AbstractBaseCommand extends Command
 {
     public function app(): Application
     {
