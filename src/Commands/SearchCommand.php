@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Intervention\Pinboard\Commands;
 
-use Illuminate\Database\Eloquent\Collection;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Intervention\Pinboard\Models\Bookmark;
-use Intervention\Pinboard\Models\Tag;
 use Symfony\Component\Console\Input\ArrayInput;
 
 class SearchCommand extends BaseCommand
@@ -24,7 +22,7 @@ class SearchCommand extends BaseCommand
         $this->setName('search');
         $this->setDescription('Search in local bookmark database');
         $this->addArgument('keyword', InputArgument::REQUIRED);
-        $this->addOption('only-url', 'u', null, 'Display only the url in search results.');
+        $this->addOption('short', 's', null, 'Display only the url in search results.');
     }
 
     /**
@@ -57,55 +55,9 @@ class SearchCommand extends BaseCommand
         }
 
         foreach ($bookmarks as $bookmark) {
-            if ($input->getOption('only-url')) {
-                $this->displayBookmarkShort($output, $bookmark);
-            } else {
-                $this->displayBookmark($output, $bookmark);
-            }
+            $bookmark->output($output, $input->getOption('short'));
         }
 
         return self::SUCCESS;
-    }
-
-    /**
-     * Display full info of given bookmark
-     *
-     * @param OutputInterface $output
-     * @param Bookmark $bookmark
-     * @return void
-     */
-    private function displayBookmark(OutputInterface $output, Bookmark $bookmark): void
-    {
-        $output->writeln("<info>📌 " . ($bookmark->title ? $bookmark->title : $bookmark->url) . "</info>");
-        if ($bookmark->tags->count()) {
-            $output->writeln("   " . $this->formatTags($bookmark->tags));
-        }
-        $output->writeln("   <fg=bright-green;options=bold,underscore>" . $bookmark->url . "</>");
-        $output->write(PHP_EOL);
-    }
-
-    /**
-     * Display only url of given bookmark
-     *
-     * @param OutputInterface $output
-     * @param Bookmark $bookmark
-     * @return void
-     */
-    private function displayBookmarkShort(OutputInterface $output, Bookmark $bookmark): void
-    {
-        $output->writeln($bookmark->url);
-    }
-
-    /**
-     * Format given text for output in cli
-     *
-     * @param Collection $tags
-     * @return string
-     */
-    private function formatTags(Collection $tags): string
-    {
-        return $tags->map(function (Tag $tag) {
-            return "<comment>" . $tag->title . "</comment>";
-        })->join(" ");
     }
 }

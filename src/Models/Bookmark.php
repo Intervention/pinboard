@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Query\Builder as QueryBuilder;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class Bookmark extends Model
 {
@@ -70,5 +71,31 @@ class Bookmark extends Model
         }
 
         return Carbon::parse($last->created_at);
+    }
+
+    /**
+     * Display bookmark in given output
+     *
+     * @param OutputInterface $output
+     * @param bool $short
+     * @return void
+     */
+    public function output(OutputInterface $output, bool $short = false): void
+    {
+        if ($short) {
+            $output->writeln($this->url);
+            return;
+        }
+
+        $output->writeln("<info>📌 " . ($this->title ? $this->title : $this->url) . "</info>");
+
+        if ($this->tags->count()) {
+            $output->writeln("   " . $this->tags->map(function (Tag $tag) {
+                return "<comment>" . $tag->title . "</comment>";
+            })->join(" "));
+        }
+
+        $output->writeln("   <fg=bright-green;options=bold,underscore>" . $this->url . "</>");
+        $output->write(PHP_EOL);
     }
 }
